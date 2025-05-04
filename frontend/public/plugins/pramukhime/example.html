@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>
+	PramukhIME TinyMCE 6 Plugin Example
+</title>
+    <meta name="Description" content="PramukhIME TinyMCE 6 Plugin example to easily type in Assamese, Bengali, Bodo, Dogri, Gujarati, Hindi, Kannada, Konkani, Maithili, Malayalam, Manipuri, Marathi, Meitei (Manipuri), Nepali, Odia, Punjabi, Sanskrit, Santali (Ol Chiki), Sindhi, Sora, Tamil and Telugu" />
+		<meta name="keywords" content="Indian, Language, Assamese, Bengali, Bodo, Dogri, Gujarati, Hindi, Kannada, Konkani, Maithili, Malayalam, Meitei, Manipuri, Marathi, Nepali, Odia, Punjabi, Sanskrit, Santali, Ol Chiki, Sindhi, Sora, Tamil, Telugu, Type pad, Unicode, transliteration " />
+<meta name="copyright" content="Copyright © 2005-2023 Vishal Monpara" /><link rel="shortcut icon" href="img/pramukhime32.png" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora%7COpen+Sans&amp;display=swap" /><link type="text/css" href="css/bootstrap.min.css" rel="Stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.4.0/tinymce.min.js"></script>
+	<script type="text/javascript">
+        // from https://davidwalsh.name/get-absolute-url
+        var getAbsoluteUrl = (function () {
+            var a;
+
+            return function (url) {
+                if (!a) a = document.createElement('a');
+                a.href = url;
+
+                return a.href;
+            };
+        })();
+
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <h1 class="navbar-brand">
+            <img src="img/pramukhime32.png" alt="logo" />PramukhIME TinyMCE 6 Plugin Example
+
+            </h1>
+            
+    <div class="text-right">
+		<a href="https://www.pramukhime.com/contact-us" title="Send feedback to Vishal Monpara" target="_blank">
+			<img src="img/email32.png" alt="Email" />
+		</a>
+		&nbsp;
+		<a href="https://www.facebook.com/pages/PramukhIME-Pramukh-Type-Pad/164572296943090" title="Like us on Facebook" target="_blank">
+			<img src="img/facebook32.png" alt="Facebook" />
+		</a>
+		&nbsp;
+		<a href="https://twitter.com/PramukhIME" title="Follow us on Twitter" target="_blank">
+			<img src="img/twitter32.png" alt="Twitter" />
+		</a>
+		&nbsp;
+		<a href="https://www.youtube.com/channel/UC8ZjL0aY2KMKtIkO1eIC_7g" title="Youtube Channel" target="_blank">
+			<img src="img/youtube32.png" alt="Youtube Channel" />
+		</a>
+	</div>
+
+        </div>
+    </nav>
+        
+    <div class="container">
+        
+    <div class="container py-3">
+		<div id="message" ></div>
+		<div>
+			<textarea id="mytextareaid" name="mytextareaid" rows="20" cols="80" style="width: 100%; height:200px;"></textarea>
+		</div>
+		<div class="alert alert-info my-3"><strong>Note:</strong> This example uses TinyMCE CDN. As soon as you access this file from real webserver on localhost, it will work.</div>
+		<div>
+			<h4>How to use?</h4>
+			<ol>
+				<li>Open this file using <b>real webserver like IIS/Apache/Nginx</b> so that this webpage opens up on http://localhost domain. <strong>This example should be used only on localhost with port 80.</strong> </li>
+				<li>Open this file in text editor and change the options given as per comments 
+					within html code to customize PramukhIME plugin.</li>
+			</ol>
+		</div>
+        
+            <div class="alert alert-warning my-3">This is a developer version plugin and should not be used in production environment. Please buy the license to use it in production environment.</div>
+            
+		
+	</div>
+
+    </div>
+    <footer class="container-fluid bg-light mt-5 py-3">
+        <div class="container text-center small">
+            
+    
+Copyright &copy; 2005-2023 <a href="https://www.pramukhime.com" target="_blank" title="PramukhIME Website">Vishal Monpara</a> | 
+		Dedicated to <a href="https://pramukhswami.org" title="HH Pramukh Swami Maharaj" target="_blank">HH Pramukh Swami Maharaj</a>
+
+        </div>
+    </footer>
+    
+    <script type="text/javascript">
+        var isAccessValid = true, message = '<strong>Fix me:</strong> ';
+
+        
+        if (location.protocol == 'file:') {
+            isAccessValid = false;
+            message += "The example does not work using file protocol (Did you double click to open this file?). Open this file using a real webserver like IIS/Apache/Nginx.";
+        } else if (location.hostname !== 'localhost' || location.port) {
+            isAccessValid = false;
+            message += "The example works only on localhost with port 80 but it does not work on " + location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+        }
+
+        
+        
+
+        if (!isAccessValid) {
+            $('#message').html(message).addClass('alert alert-danger my-3');
+        }
+        else {
+            tinymce.init({
+                selector: 'textarea#mytextareaid',
+                theme: "silver",
+                plugins: [
+                    'link', 'lists'
+                ],
+                // Add pramukhime plugin
+                external_plugins: {
+                    "pramukhime": getAbsoluteUrl('plugin.js')
+                },
+                add_unload_trigger: false,
+                autosave_ask_before_unload: false,
+                // Add buttons to toolbar
+                toolbar1: "pramukhime pramukhimehelp pramukhimesettings pramukhimeresetsettings pramukhimetogglelanguage | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | link",
+                menubar: false,
+                toolbar_items_size: 'small',
+
+                // pramukhime customization
+                // Uncomment this section to customize pramukhime plugin
+                /*		 
+                 *		 NOTE: This example lists all the options but depending on the plugin license, certain options may not be available.
+                        pramukhime_options : { // pramukhime_options is Optional. If you don't provide, it will use the default settings
+                            languages: [ // Optional. If this value is not provided, it will list all the available languages
+                                // Explanation for the values
+                                //{
+                                //	text: 'Sanskrit', // Required
+                                //	value: 'pramukhindic:sanskrit' // Required. Format = KEYBOARD_NAME:LANGUAGE_NAME. If value = "-", it becomes separator
+                                //}
+                            	
+                                // Uncomment the following to show title + all languages + english
+                                    {text:'Pramukh Indic', value:'-'}, // May be used for title
+                                    {text:'Assamese', value:'pramukhindic:assamese'},
+                                    {text:'Bengali', value:'pramukhindic:bengali'},
+                                    {text:'Bodo', value:'pramukhindic:bodo'},
+                                    {text:'Dogri', value:'pramukhindic:dogri'},
+                                    {text:'Gujarati', value:'pramukhindic:gujarati'},
+                                    {text:'Hindi', value:'pramukhindic:hindi'},
+                                    {text:'Kannada', value:'pramukhindic:kannada'},
+                                    {text:'Kashmiri', value:'pramukhindic:kashmiri'},
+                                    {text:'Konkani', value:'pramukhindic:konkani'},
+                                    {text:'Maithili', value:'pramukhindic:maithili'},
+                                    {text:'Malayalam', value:'pramukhindic:malayalam'},
+                                    {text:'Manipuri', value:'pramukhindic:manipuri'},
+                                    {text:'Marathi', value:'pramukhindic:marathi'},
+                                    {text:'Marathi (Modi)', value:'pramukhindic:marathimodi'},
+                                    {text:'Meitei', value:'pramukhindic:meitei'},
+                                    {text:'Nepali', value:'pramukhindic:nepali'},
+                                    {text:'Odia', value:'pramukhindic:odia'},
+                                    {text:'Punjabi', value:'pramukhindic:punjabi'},
+                                    {text:'Sanskrit', value:'pramukhindic:sanskrit'},
+                                    {text:'Santali (Ol Chiki)', value:'pramukhindic:santali'},
+                                    {text:'Sindhi', value:'pramukhindic:sindhi'},
+                                    {text:'Sora', value:'pramukhindic:sora'},
+                                    {text:'Tamil', value:'pramukhindic:tamil'},
+                                    {text:'Telugu', value:'pramukhindic:telugu'},
+                                    {text:'English', value:'pramukhime:english'} // Note: the value contains pramukhime and NOT pramukhindic
+                            ],
+                            // Uncomment the following value to select Sanskrit as the default language
+                            selected_value: 'pramukhindic:sanskrit', // Not required. Default value is 'pramukhime:english'
+                            // Use the toggle key as a keyboard shortcut to quickly switch between current and last selected language. 
+                            toggle_key: { // Not required. Default value is {key:120, ctrl: false, alt: false, title: 'F9'}. Customizes a toggle key which is a shortcut key responsible for switching
+                            // between currently and last selected languages.
+                                    key : 119, // Required. F8 key's keycode
+                                    ctrl : false, // Not required. If true, user must press "Ctrl" key + key to switch
+                                    alt : false,  // Not required. If true, user must press "Alt" key + key to switch
+                                    title:'F8' // Required. This title will be appended to the title of last selected language.
+                                }
+                        },
+                */
+            });
+        }
+    </script>
+
+</body>
+</html>
