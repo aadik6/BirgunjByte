@@ -166,7 +166,7 @@ const AddNews = () => {
               Height={500}
               config={{
                 toolbar:
-                  "pramukhime pramukhimehelp pramukhimesettings pramukhimeresetsettings pramukhimetogglelanguage |undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags  | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+                  "pramukhime |undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags  | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
               }}
             />
           </div>

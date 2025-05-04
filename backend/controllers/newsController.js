@@ -272,18 +272,44 @@ const deleteNews = async (req, res) => {
 const getNewsByCategory = async (req, res) => {
   const { categoryId } = req.params;
   try {
-    const news = await News.find({
+    // Fetch all news in the category
+    const allNews = await News.find({
       category: categoryId,
       isDeleted: false,
     }).populate("category");
-    if (!news) {
+
+    if (!allNews || allNews.length === 0) {
       return res.status(404).json({
         success: false,
         message: "News not found",
       });
     }
+
+    // Fetch the 5 most recent news in the category
+    const recentNews = await News.find({
+      category: categoryId,
+      isDeleted: false,
+    })
+      .populate("category")
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    if (!recentNews || recentNews.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Recent news not found",
+      });
+    }
+
+    // Filter out recent news from all news
+    const recentNewsIds = recentNews.map((news) => news._id.toString());
+    const filteredNews = allNews.filter(
+      (news) => !recentNewsIds.includes(news._id.toString())
+    );
+
+    // Prepare the response
     const toSend = {
-      news: news.map((news) => ({
+      news: filteredNews.map((news) => ({
         id: news._id,
         heading: news.heading,
         description: news.description,
@@ -294,7 +320,15 @@ const getNewsByCategory = async (req, res) => {
         createdAt: news.createdAt,
         updatedAt: news.updatedAt,
       })),
+      recentNews: recentNews.map((news) => ({
+        id: news._id,
+        heading: news.heading,
+        image: news.image,
+        description: news.description,
+        npDate: news.npDate,
+      })),
     };
+
     res.status(200).json({
       success: true,
       message: "News fetched successfully",

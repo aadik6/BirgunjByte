@@ -79,7 +79,7 @@ const TinyEditor: React.FC<TinyEditorProps> = ({
 
         // blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags  | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat
         toolbar:
-          "pramukhime pramukhimehelp pramukhimesettings pramukhimeresetsettings pramukhimetogglelanguage |undo redo |",
+          "pramukhime |undo redo |",
         ...config,
         height: Height,
         external_plugins: {
@@ -87,14 +87,10 @@ const TinyEditor: React.FC<TinyEditorProps> = ({
         },
         menubar: menuBar,
         pramukhime_options: {
-          languages: [
-            { text: "Hindi", value: "pramukhindic:hindi" },
-            { text: "Maithili", value: "pramukhindic:maithili" },
-            { text: "Malayalam", value: "pramukhindic:malayalam" },
-            { text: "Nepali", value: "pramukhindic:nepali" },
-            { text: "Sanskrit", value: "pramukhindic:sanskrit" },
-            { text: "English", value: "pramukhime:english" },
-          ],
+          // languages: [
+          //   { text: "Nepali", value: "pramukhindic:nepali" },
+          //   { text: "English", value: "pramukhime:english" },
+          // ],
           selected_value: "pramukhindic:nepali",
           toggle_key: {
             key: 119, // F8 key
