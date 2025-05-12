@@ -1,2 +1,55 @@
-// export const BASE_URL = import.meta.env.VITE_BASE_URL;
-export const BASE_URL = "http://localhost:5000/api/";
+import { userData } from "@/types/userTypes";
+import axios from "axios";
+import {jwtDecode} from "jwt-decode";
+
+ export const BASE_URL = import.meta.env.VITE_DEV_URL || 'http://localhost:5000/api/';
+
+export const customAxios  = axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    },
+});
+
+
+export const setupInterceptors = (
+    getToken: () => string | null,
+    setToken: (token: string) => void,
+    updateUser: (user: userData) => void
+): void => {
+        customAxios.interceptors.request.use(
+            async(config)=>{
+                const token = getToken && getToken();
+                if(token){
+                    config.headers.Authorization=`Bearer ${token}` 
+                }
+                return config
+            },(error)=>Promise.reject(error)
+        )
+        customAxios.interceptors.response.use(
+            (response)=>response,
+            async(error)=>{
+                const originalReq = error.config
+                if(error.response.status ===401 && !originalReq._retry){
+                    originalReq._retry = true
+                    try {
+                        const res = await customAxios.get('/auth/refresh')
+                        const {accessToken} = res.data
+                        setToken(accessToken)
+                        const user = jwtDecode(accessToken);
+                        updateUser(user)
+                        if(originalReq.headers){
+                            originalReq.headers.Authorization = `Bearer ${accessToken}`
+                        }
+                        return customAxios(originalReq)
+                    } catch (error) {
+                        return Promise.reject(error)
+                    }
+                }
+                return Promise.reject(error);
+            }
+        )
+};
+

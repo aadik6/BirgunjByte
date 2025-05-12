@@ -7,10 +7,16 @@ import parse from "html-react-parser";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { MoreHorizontal } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { toast } from "sonner";
 import DeleteDialog from "../ui/deleteDialog";
-
 
 const ManageNews = () => {
   const navigate = useNavigate();
@@ -36,7 +42,7 @@ const ManageNews = () => {
       },
     },
     {
-      accessorKey: "heading",
+      accessorKey: "Heading",
       cell: ({ row }) => {
         return (
           <div className="w-40 truncate overflow-hidden text-ellipsis font-sans">
@@ -51,7 +57,10 @@ const ManageNews = () => {
     },
     {
       accessorKey: "npDate",
-      header: "Date",
+      cell: ({ row }) => {
+        const date = row.original.npDate?.split("T")[0];
+        return <div>{date}</div>;
+      },
       enableGlobalFilter: true,
     },
     {
@@ -84,8 +93,20 @@ const ManageNews = () => {
                 Copy news ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={()=>{console.log(row.original.id)}}>Edit news</DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>{handleDelete(row.original.id)}} >Delete news</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  console.log(row.original.id);
+                }}
+              >
+                Edit news
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  handleDelete(row.original.id);
+                }}
+              >
+                Delete news
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -93,7 +114,7 @@ const ManageNews = () => {
     },
   ];
 
-  const[newsId,setNewsId]=useState<string>("");
+  const [newsId, setNewsId] = useState<string>("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const handleDelete = (id: string) => {
     setNewsId(id);
@@ -120,25 +141,23 @@ const ManageNews = () => {
   const handleCancelDelete = () => {
     setDeleteDialogOpen(false);
     setNewsId("");
-    
   };
-
 
   return (
     <div>
       <Button
         // variant={"outline"}
         onClick={() => navigate("/addNews")}
-        className="cursor-pointer bg-purple-600 hover:bg-purple-800"
+        className="cursor-pointer bg-purple-600 hover:bg-purple-800 dark:text-white"
       >
         Add News
       </Button>
       <DataTable data={data} columns={newsColumns()} />
       <DeleteDialog
-      isOpen={deleteDialogOpen}
-      onConfirm={handleConfirmDelete}
-      onCancel={handleCancelDelete}
-      name="News"
+        isOpen={deleteDialogOpen}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        name="News"
       />
     </div>
   );

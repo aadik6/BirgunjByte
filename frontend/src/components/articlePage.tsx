@@ -36,8 +36,12 @@ export default function ArticlePage() {
     }
   };
   useEffect(() => {
+    if(id.id) {
     fetchNews(id.id);
+  }
+  window.scrollTo(0, 0);
   }, [id]);
+
 
   const [likes, setLikes] = useState(89);
   const [isBookmarked, setIsBookmarked] = useState(false);

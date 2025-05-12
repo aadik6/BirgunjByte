@@ -8,27 +8,32 @@ import CategoryNews from "./pages/categoryNews";
 import AddNews from "./components/Admin/addNews";
 import ManageNews from "./components/Admin/manageNews";
 import ArticlePage from "./components/articlePage";
-// import useNewsStore from "./stores/useNewsStore";
-// import TestDrag from "./components/testTdrag";
-// import { SheetDemo } from "./components/Admin/testTable";
+import Login from "./components/login";
+import AdminLayout from "@/components/adminLayout";
+import AdminDashboard from "./components/Admin/adminDashboard";
 
 const App = () => {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/category" element={<Category />} />
-            <Route path="/category/:name/:id" element={<CategoryNews />} />
-            <Route path="/addNews" element={<AddNews />} />
-            <Route path="/managenews" element={<ManageNews />} />
-            <Route path="/news/:id" element={<ArticlePage/>}/>
-            {/* <Route path="/img" element={<TestDrag/>}/> */}
-            {/* <Route path="test" element={<SheetDemo/>} /> */}
-          </Routes>
-        </Layout>
         <Toaster richColors />
+        <Routes>
+          {/* Routes for the main layout */}
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/category/:name/:id" element={<CategoryNews />} />
+            <Route path="/news/:id" element={<ArticlePage />} />
+          </Route>
+
+          {/* Routes for the admin layout */}
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/managenews" element={<ManageNews />} />
+            <Route path="/addNews" element={<AddNews />} />
+            <Route path="/category" element={<Category />} />
+          </Route>
+        </Routes>
       </ThemeProvider>
     </BrowserRouter>
   );

@@ -35,11 +35,20 @@ const userSchema = new mongoose.Schema({
         type:Date,
         default:Date.now
     },
+    updatedAt:{
+        type:Date,
+        default:Date.now
+    },
     createdBy:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         optional:true
 
+    },
+    updatedBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        optional:true
     },
     refreshToken:{
         type:String,
