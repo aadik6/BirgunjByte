@@ -1,54 +1,66 @@
-# React + TypeScript + Vite
+# Birgunj Byte News Portal - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Birgunj Byte News Portal is a React-based web application developed to serve news content in the Nepali language for Madhesh Province. The platform aims to contribute to CAN members by delivering reliable and up-to-date news. This README file focuses on the frontend implementation.
 
-Currently, two official plugins are available:
+## Table of Contents
+- [Technologies Used](#technologies-used)
+- [Features](#features)
+- [Setup Instructions](#setup-instructions)
+- [Project Structure](#project-structure)
+- [State Management](#state-management)
+- [Modules Under Construction](#modules-under-construction)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Technologies Used
+- **React**: Framework for building user interfaces.
+- **TypeScript**: For static type checking and enhanced developer experience.
+- **Zustand**: Lightweight state management solution.
+- **Tailwind CSS** *(optional)*: For styling and responsive design.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
+- **News Categories**: Organized presentation of news articles by categories.
+- **Nepali Language Support**: Complete Nepali medium for user-friendly engagement.
+- **Dynamic Content Rendering**: Fetch and display news articles dynamically.
+- **State Management**: Leveraging Zustand for smooth state handling.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Setup Instructions
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Prerequisites
+Ensure you have the following installed:
+- Node.js (v14 or later)
+- npm or yarn
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/birgunj-byte-news-portal.git
+   cd birgunj-byte-news-portal/frontend
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+2. npm install
+# or
+yarn install
+
+3. REACT_APP_API_URL=http://localhost:5000/api
+
+4. npm run dev
+# or
+yarn run dev
+
+
+### Project Structure
+frontend/
+├── src/
+│   ├── assets/           # Static assets
+│   ├── components/       # Reusable UI components
+│   ├── features/         # Feature-specific modules
+│   ├── pages/            # Page components
+│   ├── store/            # Zustand state management
+│   ├── types/            # TypeScript type definitions
+│   ├── utils/            # Utility functions
+│   ├── App.tsx           # Main application component
+│   └── index.tsx         # Entry point
+
+### Modules Under Construction
+  1. Advertisements: Integration of ad spaces for sponsors.
+  2. User Login: Authentication and user profile management.
