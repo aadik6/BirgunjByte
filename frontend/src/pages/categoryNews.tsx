@@ -3,18 +3,20 @@ import { newsData } from "@/types/newsTypes";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import parse from "html-react-parser";
+import CategoryPageSkeleton from "@/components/categoryPageSkeleton";
 
 const CategoryNews = () => {
   const { name, id } = useParams();
   const navigate = useNavigate();
-  console.log(name, "categoryName");
+  const [loading, setLoading] = useState<boolean>(true);
   const [categoryNews, setCategoryNews] = useState<newsData[]>([]);
   const [recentNews, setRecentNews] = useState<newsData[]>([]);
   const getNews = async (categoryId: string) => {
     const res = await getNewsByCategory(categoryId);
     setCategoryNews(res.data.news);
     setRecentNews(res.data.recentNews);
-    console.log(res, "categoryNews");
+    setLoading(false);
+    // console.log(res, "categoryNews");
   };
   useEffect(() => {
     getNews(id as string);
@@ -23,6 +25,10 @@ const CategoryNews = () => {
   // Separate featured news from regular news
   const featuredNews = recentNews[0];
   const recentCatNews = recentNews.slice(1, 6);
+
+  if(loading){
+    return <CategoryPageSkeleton/>
+  }
 
   return (
     <div className="container mx-auto px-4 py-6">

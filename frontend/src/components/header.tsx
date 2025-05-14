@@ -6,6 +6,7 @@ import NepaliDate from "nepali-date";
 import { useEffect, useState } from "react";
 
 const Header = () => {
+
   const np = new NepaliDate(new Date()).format("mmmm D, YYYY");
   const [time, setTime] = useState(
     new Date().toLocaleTimeString([], {
@@ -37,7 +38,10 @@ const Header = () => {
             <p>{np}</p>
             <p>{time}</p>
           </div>
-          <div className="headerLogo">logo</div>
+          <div className="">
+            <p>logo</p>
+            {/* <img src="/logo.png" alt="logo" className="h-20" /> */}
+          </div>
           <div className="headerWeather">weather</div>
         </div>
         {/* <Separator/> */}
