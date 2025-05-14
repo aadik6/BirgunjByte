@@ -11,7 +11,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 ConnectDB();
 const corsOptions = {
-  origin: "http://localhost:5173", // Replace with your frontend URL
+  origin: ["http://localhost:5173",
+    process.env.FRONTEND_PROD_URL
+  ], // Replace with your frontend URL
   credentials: true, // Allow cookies and Authorization headers
 };
 app.use(cors(corsOptions));
