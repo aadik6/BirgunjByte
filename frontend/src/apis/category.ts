@@ -6,7 +6,7 @@ import axios from 'axios';
 
 export async function getCategories() {
     const url = "category/getAll"
-    const response = await customAxios.get(`${BASE_URL}${url}`);
+    const response = await customAxios.get(`${url}`);
     return response.data
 }
 
