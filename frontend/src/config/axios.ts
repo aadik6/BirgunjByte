@@ -2,7 +2,10 @@ import { userData } from "@/types/userTypes";
 import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
-export const BASE_URL = import.meta.env.VITE_DEV_URL || 'http://localhost:5000/api/';
+const devUrl = import.meta.env.VITE_DEV_URL || 'http://localhost:5000/api/';
+const prodUrl = import.meta.env.VITE_PROD_URL;
+
+export const BASE_URL = import.meta.env.MODE==="production" ? prodUrl : devUrl;
 
 export const customAxios = axios.create({
     baseURL: BASE_URL,
