@@ -12,8 +12,9 @@ const PORT = process.env.PORT || 5000;
 ConnectDB();
 const corsOptions = {
   origin: ["http://localhost:5173",
-    process.env.FRONTEND_PROD_URL
-  ], // Replace with your frontend URL
+    process.env.FRONTEND_PROD_URL,
+    process.env.FRONTEND_WEB_URL,
+  ],
   credentials: true, // Allow cookies and Authorization headers
 };
 app.use(cors(corsOptions));
