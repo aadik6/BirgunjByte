@@ -2,7 +2,7 @@ import { userData } from "@/types/userTypes";
 import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
-const devUrl = import.meta.env.VITE_DEV_URL || 'http://localhost:5000/api/';
+const devUrl = import.meta.env.VITE_DEV_URL ;
 const prodUrl = import.meta.env.VITE_PROD_URL;
 
 export const BASE_URL = import.meta.env.MODE==="production" ? prodUrl : devUrl;
