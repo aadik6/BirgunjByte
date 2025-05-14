@@ -1,6 +1,7 @@
 const UserModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const userModel = require("../models/userModel");
 
 const signup = async (req, res) => {
   const { firstName, lastName, userName, email, avatar, password } = req.body;
@@ -143,35 +144,36 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  const { refreshToken } = req.body;
-  if (!refreshToken) {
-    return res.status(400).json({
-      success: false,
-      message: "Refresh token is required",
-    });
-  }
   try {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: "No refresh token found",
+      });
+    }
     const user = await UserModel.findOne({ refreshToken });
     if (!user) {
-      return res.status(404).json({
+      return res.status(403).json({
         success: false,
-        message: "User not found",
+        message: "Forbidden",
       });
     }
     user.refreshToken = null;
     await user.save();
+    res.clearCookie("refreshToken");
     res.status(200).json({
       success: true,
       message: "User logged out successfully",
     });
-  } catch (error) {
+  }catch (error) {
     res.status(500).json({
       success: false,
       message: "Internal server error",
       error: error.message,
     });
   }
-};
+}
 
 const update = async (req, res) => {
   const { firstName, lastName, userName, email, avatar } = req.body;
@@ -240,9 +242,6 @@ const updatePassword = async (req, res) => {
     });
   }
 };
-
-// const refreshToken = async (req, res) => {
-
 
 //admin actions
 
@@ -327,7 +326,9 @@ const updateUserByAdmin = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await UserModel.find({role: "user"}).select("-password -refreshToken");
+    const users = await UserModel.find({ role: "user" }).select(
+      "-password -refreshToken"
+    );
     if (!users) {
       return res.status(404).json({
         success: false,
@@ -358,7 +359,7 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   try {
     const user = await UserModel.findById(id).select("-password -refreshToken");
     if (!user) {
@@ -379,13 +380,77 @@ const getUserById = async (req, res) => {
       error: error.message,
     });
   }
-}
+};
 
+const refreshToken = async (req, res) => {
+  const {refreshToken} = req.cookies;
+  if (!refreshToken) {
+    return res.status(401).json({
+      success: false,
+      message: "Refresh token is required",
+    });
+  }
+  try {
+    const user = await userModel.findOne({ refreshToken });
+    if (!user) {
+      return res.status(403).json({
+        success: false,
+        message: "forbidden",
+      });
+    }
+    jwt.verify(refreshToken, process.env.JWT_SECRET, async(err, decoded) => {
+      if (err) {
+        return res.status(403).json({
+          success: false,
+          message: "forbidden",
+        });
+      }
+      const payLoad = {
+        user: {
+          id: decoded.user.id,
+          firstName: decoded.user.firstName,
+          lastName: decoded.user.lastName,
+          userName: decoded.user.userName,
+          email: decoded.user.email,
+          avatar: decoded.user.avatar,
+          role: decoded.user.role,
+        },
+      };
+      const accessToken = jwt.sign(payLoad, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+      const newRefreshToken = jwt.sign(payLoad, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
+      user.refreshToken = newRefreshToken;
+      await user.save();
+      res.cookie("refreshToken", newRefreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "Access token generated successfully",
+        accessToken,
+      });
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: err.message,
+    });
+  }
+};
 module.exports = {
   signup,
   login,
   logout,
   update,
+  refreshToken,
   updatePassword,
   createUserByAdmin,
   updateUserByAdmin,
