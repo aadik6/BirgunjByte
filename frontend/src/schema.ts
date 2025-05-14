@@ -13,6 +13,7 @@ export const newsSchema = z.object({
     isBreaking: z.boolean(),
     category: z.string().min(1, "Select a category"),
     isFeatured: z.boolean(),
+    image:z.optional(z.string()),
 });
 
 export type NewsFormValue = z.infer<typeof newsSchema>

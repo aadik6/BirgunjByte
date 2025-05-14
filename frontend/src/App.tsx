@@ -11,6 +11,7 @@ import ArticlePage from "./components/articlePage";
 import Login from "./components/login";
 import AdminLayout from "@/components/adminLayout";
 import AdminDashboard from "./components/Admin/adminDashboard";
+import ProtectedRoute from "./config/protectedRoute";
 
 const App = () => {
   return (
@@ -28,10 +29,12 @@ const App = () => {
 
           {/* Routes for the admin layout */}
           <Route element={<AdminLayout />}>
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/managenews" element={<ManageNews />} />
-            <Route path="/addNews" element={<AddNews />} />
-            <Route path="/category" element={<Category />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/managenews" element={<ManageNews />} />
+              <Route path="/addNews" element={<AddNews />} />
+              <Route path="/category" element={<Category />} />
+            </Route>
           </Route>
         </Routes>
       </ThemeProvider>

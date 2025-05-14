@@ -73,8 +73,8 @@ function CategoryDialog({
       } else {
         // Replace with your update API
 
-        const res = await updateCategory(category?.id, data);
-        if (res.status === 200) {
+        const res = category && await updateCategory(category?.id, data);
+        if (res?.status === 200) {
           toast.success("Category updated successfully");
           refetched();
         }

@@ -1,12 +1,12 @@
 
-import { BASE_URL } from "@/config/axios";
+import { BASE_URL, customAxios } from "@/config/axios";
 import { CategoryFormValue } from "@/schema";
 // import { CategoryData } from "@/types/columnTypes";
 import axios from 'axios';
 
 export async function getCategories() {
     const url = "category/getAll"
-    const response = await axios.get(`${BASE_URL}${url}`);
+    const response = await customAxios.get(`${BASE_URL}${url}`);
     return response.data
 }
 

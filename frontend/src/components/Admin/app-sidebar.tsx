@@ -30,6 +30,7 @@ import { ThemeToggle } from "../theme-toggle";
 import { Separator } from "../ui/separator";
 import { useEffect, useState } from "react";
 import NepaliDate from "nepali-date";
+import { useAuthStore } from "@/stores/authStore";
 
 // Menu items.
 const items = [
@@ -89,6 +90,7 @@ export function AppSidebar() {
     return () => clearInterval(interval);
   }, []);
   const navigate = useNavigate();
+  const {user} = useAuthStore();
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -130,7 +132,7 @@ export function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <User2 /> Username
+                  <User2 /> {user?.userName}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

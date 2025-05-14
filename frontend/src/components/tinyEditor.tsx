@@ -107,7 +107,7 @@ const TinyEditor: React.FC<TinyEditorProps> = ({
         ],
       }}
       disabled={disabled}
-      onInit={(evt, editor) => (editorRef.current = editor)}
+      onInit={(_, editor) => (editorRef.current = editor)}
     />
   );
 };

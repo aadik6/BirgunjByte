@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/stores/authStore";
 import { useState } from "react";
 import { Eye, EyeOff, LoaderIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm({
   className,
@@ -21,10 +22,14 @@ export function LoginForm({
   const [password, setPassword] = useState<string>("");
   const { loading, login } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const hadleLogin = (e: any) => {
+  const hadleLogin = async(e: any) => {
     e.preventDefault();
-    login(email, password);
+    const res = await login(email, password);
+    if(res){
+      navigate("/admin");
+    }
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

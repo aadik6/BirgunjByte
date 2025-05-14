@@ -141,7 +141,7 @@ const Category = () => {
     <div>
       <Button
         onClick={() => setAddCategoryDialog(true)}
-        className="cursor-pointer bg-purple-600 hover:bg-purple-800"
+        className="cursor-pointer bg-purple-600 hover:bg-purple-800 dark:text-white"
       >
         Add Category
       </Button>

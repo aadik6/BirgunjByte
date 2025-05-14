@@ -1,10 +1,14 @@
-import { BASE_URL, customAxios } from "@/config/axios";
-import axios from "axios";
+import { customAxios } from "@/config/axios";
 
 export async function authLogin(email: string, password: string) {
-  const response = await axios.post(`${BASE_URL}auth/login`, {
+  const response = await customAxios.post(`auth/login`, {
     email,
     password,
   });
+  return response.data;
+}
+
+export async function getRefreshToken() {
+  const response = await customAxios.get(`auth/refresh`);
   return response.data;
 }

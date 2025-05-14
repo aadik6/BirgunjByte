@@ -12,7 +12,7 @@ interface FileDropzoneProps {
 
 const FileDropzone: React.FC<FileDropzoneProps> = ({
   onDrop,
-  accept = "image/*",
+  // accept = "image/*",
   multiple = false,
   onRemove,
   className = "",
@@ -41,7 +41,7 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleDrop,
-    accept,
+    // accept,
     multiple,
   });
 

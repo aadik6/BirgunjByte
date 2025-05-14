@@ -4,11 +4,12 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 const ProtectedRoute: React.FC = () => {
   const navigate = useNavigate();
-  const { token, user } = useAuthStore();
+  const { token, user, refreshToken } = useAuthStore();
 
   // Redirect programmatically if not authenticated
   React.useEffect(() => {
     if (!token || user?.role !== "admin") {
+      refreshToken();
       navigate("/login");
     }
   }, [token, user, navigate]);
