@@ -40,7 +40,7 @@ export default function ArticlePage() {
     fetchNews(id.id);
   }
   window.scrollTo(0, 0);
-  }, [id]);
+  }, [id.id]);
 
 
   const [likes, setLikes] = useState(89);
