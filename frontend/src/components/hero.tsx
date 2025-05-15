@@ -1,35 +1,19 @@
 import { Tag } from "lucide-react";
 import { AuroraText } from "@/components/magicui/aurora-text";
-import { getFeaturedNews } from "@/apis/news";
-import { newsData } from "@/types/newsTypes";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import parse from "html-react-parser";
-import { toast } from "sonner";
 import HeroSkeleton from "./ui/heroSkeleton";
 import {useNavigate } from "react-router-dom";
+import useNewsStore from "@/stores/useNewsStore";
 
 const Hero = () => {
-  const [featuredNews, setFeaturedNews] = useState<newsData>();
-  const [secondaryNews, setSecondaryNews] = useState<newsData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const {loading,featuredNews,secondaryNews,fetchFeaturedNews} = useNewsStore();
   const navigate = useNavigate();
 
-  const fetchFeaturedNews = async () => {
-    try {
-      setLoading(true);
-      const res = await getFeaturedNews();
-      console.log(res, "hero");
-      setFeaturedNews(res.data[0]);
-      setSecondaryNews(res.data.slice(1, 3));
-      setLoading(false);
-    } catch (error: any) {
-      setLoading(false);
-      toast.error("Error fetching featured news", error);
-      console.error("Error fetching featured news:", error);
-    }
-  };
   useEffect(() => {
-    fetchFeaturedNews();
+    if(!secondaryNews?.length){
+      fetchFeaturedNews();
+    }
   }, []);
 
   if (loading) {

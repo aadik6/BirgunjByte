@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 const SecondHero = () => {
   const { recentNews, topTechNews, fetchNews } = useNewsStore();
   useEffect(() => {
-    fetchNews();
+    if (!topTechNews || !recentNews?.length) {
+      fetchNews();
+    }
   }, []);
   const navigate = useNavigate();
 

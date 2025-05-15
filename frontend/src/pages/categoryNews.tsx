@@ -12,15 +12,21 @@ const CategoryNews = () => {
   const [categoryNews, setCategoryNews] = useState<newsData[]>([]);
   const [recentNews, setRecentNews] = useState<newsData[]>([]);
   const getNews = async (categoryId: string) => {
-    const res = await getNewsByCategory(categoryId);
-    setCategoryNews(res.data.news);
-    setRecentNews(res.data.recentNews);
-    setLoading(false);
-    // console.log(res, "categoryNews");
+    try{
+      setLoading(true);
+      const res = await getNewsByCategory(categoryId);
+      setCategoryNews(res.data.news);
+      setRecentNews(res.data.recentNews);
+      setLoading(false);
+      // console.log(res, "categoryNews");
+    }catch (err) {
+      setLoading(false);
+      console.error("Error fetching category news", err);
+    }
   };
   useEffect(() => {
     getNews(id as string);
-  }, [id]);
+  }, [id,name]);
 
   // Separate featured news from regular news
   const featuredNews = recentNews[0];

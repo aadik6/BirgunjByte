@@ -1,4 +1,4 @@
-import { getAllNews } from "@/apis/news";
+import { getAllNews, getFeaturedNews } from "@/apis/news";
 import { newsData } from "@/types/newsTypes";
 import { toast } from "sonner";
 import { create } from "zustand";
@@ -11,6 +11,9 @@ interface NewsStore {
     recentNews: newsData[];
     setNews: (news: newsData[]) => void;
     topTechNews: newsData|null;
+    fetchFeaturedNews:()=>Promise<void>;
+    featuredNews:newsData|null;
+    secondaryNews:newsData[];
 }
 
 const useNewsStore = create<NewsStore>()((set) => ({
@@ -20,6 +23,8 @@ const useNewsStore = create<NewsStore>()((set) => ({
     error: null,
     recentNews:[],
     topTechNews:null,
+    featuredNews:null,
+    secondaryNews:[],
     setNews: (news) => set({ news }),
 
     fetchNews: async () => {
@@ -49,6 +54,16 @@ const useNewsStore = create<NewsStore>()((set) => ({
             console.error("Error fetching news", err);
         }
     },
+    fetchFeaturedNews:async ()=>{
+        try{
+            set({loading:true,error:null});
+            const res = await getFeaturedNews();
+            set({featuredNews:res.data[0],secondaryNews:res.data.slice(1, 3)});
+        }catch(err:any){
+            set({loading:false,error:"Error fetching featuredNews"})
+            toast.error("Error fetching feature news",err)
+        }
+    }
 }))
 
 export default useNewsStore;
