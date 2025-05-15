@@ -28,6 +28,7 @@ export default function ArticlePage() {
 
   const fetchNews = async (id: string) => {
     try {
+      setLoading(true);
       const res = await getNewsById(id);
       setNews(res.data);
       setLoading(false);
