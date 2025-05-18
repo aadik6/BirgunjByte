@@ -3,11 +3,19 @@ const NepaliDate = require("nepali-date");
 const striptags = require("striptags");
 
 const createNews = async (req, res) => {
-  const { heading, description, image, isBreaking, isFeatured, category } =
-    req.body;
+  const {
+    heading,
+    description,
+    image,
+    isBreaking,
+    isFeatured,
+    category,
+    author,
+  } = req.body;
   const Np = new NepaliDate();
   const npDate = Np.format("YYYY-MM-DD");
   const plainText = striptags(heading);
+
   try {
     const news = await News.create({
       heading: plainText,
@@ -17,12 +25,15 @@ const createNews = async (req, res) => {
       isFeatured,
       category,
       npDate,
+      author,
+      createdBy: req.user._id,
     });
     const toSend = {
       id: news._id,
       heading: news.heading,
       description: news.description,
       image: news.image,
+      author: news.author,
       isBreaking: news.isBreaking,
       isFeatured: news.isFeatured,
       npDate: news.npDate,
@@ -103,37 +114,37 @@ const getAllNews = async (req, res) => {
     //   heading: news.heading,
     //   image: news.image,
     // }));
-    
+
     const topTechNews = await News.find({
       isDeleted: false,
-      isFeatured:false,
+      isFeatured: false,
       category: "6810ad8d98bf251c0c79b742",
     })
       .populate("category")
       .sort({ createdAt: -1 })
       .limit(1);
 
-      // if(!topTechNews){
-      //   topTechNews = await News.find({
-      //     isDeleted: false,
-      //     isFeatured:false,
-      //     category: "6810ad8d98bf251c0c79b742",
-      // })
-      // .populate("category")
-      // .sort({ createdAt: -1 })
-      // .limit(1);
-      // }
-      const toSendTopTechNews = topTechNews.map((news) => ({
-        id: news._id,
-        heading: news.heading,
-        description: news.description,
-        image: news.image,
-        isBreaking: news.isBreaking,
-        npDate: news.npDate,
-        views: news.views,
-        category: news.category,
-        createdAt: news.createdAt,
-      }));
+    // if(!topTechNews){
+    //   topTechNews = await News.find({
+    //     isDeleted: false,
+    //     isFeatured:false,
+    //     category: "6810ad8d98bf251c0c79b742",
+    // })
+    // .populate("category")
+    // .sort({ createdAt: -1 })
+    // .limit(1);
+    // }
+    const toSendTopTechNews = topTechNews.map((news) => ({
+      id: news._id,
+      heading: news.heading,
+      description: news.description,
+      image: news.image,
+      isBreaking: news.isBreaking,
+      npDate: news.npDate,
+      views: news.views,
+      category: news.category,
+      createdAt: news.createdAt,
+    }));
     res.status(200).json({
       success: true,
       message: "News fetched successfully",
@@ -204,6 +215,7 @@ const updateNews = async (req, res) => {
         isBreaking,
         npDate,
         category,
+        updatedBy: req.user._id,
         updatedAt: Date.now(),
       },
       { new: true }
@@ -246,6 +258,7 @@ const deleteNews = async (req, res) => {
       id,
       {
         isDeleted: true,
+        updatedBy: req.user._id,
         updatedAt: Date.now(),
       },
       { new: true }

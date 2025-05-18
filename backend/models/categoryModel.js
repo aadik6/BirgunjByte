@@ -18,16 +18,14 @@ const categorySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-//   createdBy: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "User",
-//     required: true,
-//   },
-//   updatedBy: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "User",
-//     required: true,
-//   },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  updatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   isDeleted: {
     type: Boolean,
     default: false,

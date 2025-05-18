@@ -34,6 +34,11 @@ const newsSchema = new mongoose.Schema({
         ref: "Category",
         required: true,
     },
+    author:{
+        type:Boolean,
+        default: true,
+        required: true,
+    },
     views:{
         type: Number,
         default: 0,
@@ -50,16 +55,16 @@ const newsSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    // createdBy: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    //     required: true,
-    // },
-    // updatedBy: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    //     required: true,
-    // },
+
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
+    updatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        
+    },
 })
 
 module.exports = mongoose.model("News", newsSchema);

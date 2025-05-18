@@ -1,10 +1,16 @@
-const expres = require('express');
+const expres = require("express");
 const router = expres.Router();
-const { createCategory, getAllCategories, updateCategory,deleteCategory } = require('../controllers/categoryController');
+const {
+  createCategory,
+  getAllCategories,
+  updateCategory,
+  deleteCategory,
+} = require("../controllers/categoryController");
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.post('/create',createCategory); 
-router.get('/getAll', getAllCategories);
-router.patch('/update/:id', updateCategory);
-router.delete('/delete/:id', deleteCategory);
+router.post("/create", authMiddleware, createCategory);
+router.get("/getAll", getAllCategories);
+router.patch("/update/:id", authMiddleware, updateCategory);
+router.delete("/delete/:id", authMiddleware, deleteCategory);
 
 module.exports = router;
