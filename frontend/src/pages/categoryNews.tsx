@@ -12,28 +12,28 @@ const CategoryNews = () => {
   const [categoryNews, setCategoryNews] = useState<newsData[]>([]);
   const [recentNews, setRecentNews] = useState<newsData[]>([]);
   const getNews = async (categoryId: string) => {
-    try{
+    try {
       setLoading(true);
       const res = await getNewsByCategory(categoryId);
       setCategoryNews(res.data.news);
       setRecentNews(res.data.recentNews);
       setLoading(false);
       // console.log(res, "categoryNews");
-    }catch (err) {
+    } catch (err) {
       setLoading(false);
       console.error("Error fetching category news", err);
     }
   };
   useEffect(() => {
     getNews(id as string);
-  }, [id,name]);
+  }, [id, name]);
 
   // Separate featured news from regular news
   const featuredNews = recentNews[0];
   const recentCatNews = recentNews.slice(1, 6);
 
-  if(loading){
-    return <CategoryPageSkeleton/>
+  if (loading) {
+    return <CategoryPageSkeleton />;
   }
 
   return (
@@ -50,7 +50,7 @@ const CategoryNews = () => {
         {featuredNews && (
           <div className="w-full md:w-2/3">
             <h2 className="text-xl font-semibold mb-4 border-b pb-2">
-              Featured News
+              बिशेष सुचना
             </h2>
 
             {/* Featured News Item */}

@@ -14,6 +14,7 @@ export const newsSchema = z.object({
     category: z.string().min(1, "Select a category"),
     isFeatured: z.boolean(),
     image:z.optional(z.string()),
+    author:z.boolean(),
 });
 
 export type NewsFormValue = z.infer<typeof newsSchema>

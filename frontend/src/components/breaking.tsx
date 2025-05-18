@@ -6,7 +6,9 @@ import { useNavigate } from "react-router-dom";
 const Breaking = () => {
   const { breakingNews,fetchNews } = useNewsStore();
   useEffect(() => {
-    fetchNews();
+    if (!breakingNews?.length) {
+      fetchNews();
+    }
   }, []);
   const navigate = useNavigate();
 

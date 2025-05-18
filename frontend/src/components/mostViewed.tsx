@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import NewsCard from "./newsCard";
 import { useNavigate } from "react-router-dom";
 import { AuroraText } from "./magicui/aurora-text";
+import NewsCardSkeleton from "./NewsCardSkeleton";
 const MostViewed = () => {
   const [mostViewed, setMostViewed] = useState<newsData[]>([]);
   const navigate = useNavigate();
@@ -24,21 +25,30 @@ const MostViewed = () => {
   useEffect(() => {
     fetchMostViewed();
   }, []);
-  
+
   return (
     <div className="px-4">
       <AuroraText className="text-lg font-bold mb-3">धेरै पढिएको</AuroraText>
       <Carousel className="w-full">
-        <CarouselContent >
-          {mostViewed.map((news) => (
-            <CarouselItem
-              key={news.id}
-              className="relative flex-shrink-0 md:basis-1/2 lg:basis-1/4 cursor-pointer"
-              onClick={() => {navigate(`/news/${news.id}`)}}
-            >
-              <NewsCard news={news} />
-            </CarouselItem>
-          ))}
+        <CarouselContent>
+          {mostViewed && mostViewed.length > 0
+            ? mostViewed.map((news) => (
+                <CarouselItem
+                  key={news.id}
+                  className="relative flex-shrink-0 md:basis-1/2 lg:basis-1/4 cursor-pointer"
+                  onClick={() => navigate(`/news/${news.id}`)}
+                >
+                  <NewsCard news={news} />
+                </CarouselItem>
+              ))
+            : Array.from({ length: 5 }).map((_, idx) => (
+                <CarouselItem
+                  key={idx}
+                  className="relative flex-shrink-0 md:basis-1/2 lg:basis-1/4"
+                >
+                  <NewsCardSkeleton />
+                </CarouselItem>
+              ))}
         </CarouselContent>
       </Carousel>
     </div>

@@ -1,16 +1,16 @@
-import { BASE_URL } from "@/config/axios";
+import { BASE_URL, customAxios } from "@/config/axios";
 import { NewsFormValue } from "@/schema";
 import axios from "axios";
 
 export async function getAllNews() {
     const url = "news/get"
-    const response = await axios.get(`${BASE_URL}${url}`);
+    const response = await customAxios.get(`${BASE_URL}${url}`);
     return response.data
 }
 
 export async function createNews(data: NewsFormValue) {
     const url = "news/create"
-    const response = await axios.post(`${BASE_URL}${url}`, data)
+    const response = await customAxios.post(`${BASE_URL}${url}`, data)
     return response
 }
 
@@ -22,7 +22,7 @@ export async function getNewsById(id: string) {
 
 export async function deleteNews(id: string) {
     const url = `news/delete/${id}`;
-    const res = await axios.delete(`${BASE_URL}${url}`);
+    const res = await customAxios.delete(`${BASE_URL}${url}`);
     return res;
 }
 

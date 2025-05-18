@@ -19,7 +19,7 @@ const Category = () => {
     description: "",
   });
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const {categories,fetchCategories,loading} = useCategoryStore();
+  const { categories, fetchCategories, loading } = useCategoryStore();
 
   const categoryColumn = (): ColumnDef<CategoryData>[] => [
     {
@@ -129,12 +129,11 @@ const Category = () => {
     });
   };
 
-
   useEffect(() => {
     fetchCategories();
   }, []);
-  if(loading){
-    return <div>Loading.....</div>
+  if (loading) {
+    return <div>Loading.....</div>;
   }
 
   return (
@@ -145,7 +144,9 @@ const Category = () => {
       >
         Add Category
       </Button>
-      <DataTable data={categories} columns={categoryColumn()} />
+      <div>
+        <DataTable data={categories} columns={categoryColumn()} />
+      </div>
       <CategoryDialog
         mode="add"
         onOpen={addCategoryDialog}

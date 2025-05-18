@@ -39,6 +39,9 @@ export const setupInterceptors = (
                 originalReq._retry = true
                 try {
                     const res = await customAxios.get('/auth/refresh')
+                    if (res.status !== 200) {
+                        return Promise.reject(error)
+                    }
                     const { accessToken } = res.data
                     setToken(accessToken)
                     const decodedToken = jwtDecode<JwtPayload & { user: userData }>(accessToken);

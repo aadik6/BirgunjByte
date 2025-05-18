@@ -13,6 +13,9 @@ import { getNewsById } from "@/apis/news";
 import parse from "html-react-parser";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ArticleSkeleton from "./articleSkeleton";
+import useNewsStore from "@/stores/useNewsStore";
+import NewsCard from "./newsCard";
+import NewsCardSkeleton from "./NewsCardSkeleton";
 
 // Dummy author data
 const authorData = {
@@ -23,30 +26,28 @@ const authorData = {
 export default function ArticlePage() {
   const id = useParams();
   console.log(id.id, "id");
-  const [news, setNews] = useState<newsData | null>(null);
+  const [newsArticle, setNewsArticle] = useState<newsData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchNews = async (id: string) => {
     try {
       setLoading(true);
       const res = await getNewsById(id);
-      setNews(res.data);
+      setNewsArticle(res.data);
       setLoading(false);
     } catch (error: any) {
       console.error("Error fetching news by ID:", error);
     }
   };
   useEffect(() => {
-    if(id.id) {
-    fetchNews(id.id);
-  }
-  window.scrollTo(0, 0);
+    if (id.id) {
+      fetchNews(id.id);
+    }
+    window.scrollTo(0, 0);
   }, [id.id]);
-
 
   const [likes, setLikes] = useState(89);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  console.log("newsPage");
 
   const handleLike = () => {
     setLikes(likes + 1);
@@ -55,7 +56,15 @@ export default function ArticlePage() {
   const handleBookmark = () => {
     setIsBookmarked(!isBookmarked);
   };
-  const date = news?.npDate?.split("T")[0];
+  const date = newsArticle?.npDate?.split("T")[0];
+  const { news } = useNewsStore();
+  const relatedArticles = news
+    .filter(
+      (article) =>
+        article.category._id === newsArticle?.category._id &&
+        article.id !== newsArticle?.id
+    )
+    .slice(0, 5);
 
   if (loading) {
     return <ArticleSkeleton />;
@@ -63,8 +72,8 @@ export default function ArticlePage() {
 
   return (
     <>
-      {news && (
-        <div className="max-w-4xl mx-auto px-4">
+      {newsArticle && (
+        <article className="max-w-4xl mx-auto px-4">
           {/* Back button */}
           <div className="mb-6">
             <button className="flex items-center text-gray-600 hover:text-purple-800 transition">
@@ -78,7 +87,7 @@ export default function ArticlePage() {
           {/* Category and Date */}
           <div className="flex flex-wrap items-center text-sm mb-4">
             <span className="bg-purple-800 text-white px-3 py-1 rounded-full font-medium">
-              {news.category.name}
+              {newsArticle.category.name}
             </span>
             <div className="flex items-center text-gray-500 ml-3 md:ml-4">
               <Clock size={16} />
@@ -86,13 +95,13 @@ export default function ArticlePage() {
             </div>
             <div className="flex items-center text-gray-500 ml-3 md:ml-4">
               <Eye size={16} />
-              <span className="ml-1">{news.views} views</span>
+              <span className="ml-1">{newsArticle.views} views</span>
             </div>
           </div>
 
           {/* Article Title */}
           <h1 className="text-xl md:text-3xl font-bold mb-6">
-            {parse(news.heading)}
+            {parse(newsArticle.heading)}
           </h1>
 
           {/* Author info */}
@@ -110,15 +119,15 @@ export default function ArticlePage() {
           {/* Featured Image */}
           <div className="mb-8">
             <img
-              src={news.image}
-              alt={news.heading}
+              src={newsArticle.image}
+              alt={newsArticle.heading}
               className="w-full md:h-96 object-cover rounded-lg shadow-md"
             />
           </div>
 
           {/* Article content */}
           <div className="prose max-w-none mb-8">
-            {news && <div>{parse(news.description)}</div>}
+            {newsArticle && <div>{parse(newsArticle.description)}</div>}
           </div>
 
           {/* Engagement buttons */}
@@ -154,9 +163,24 @@ export default function ArticlePage() {
               </button>
             </div>
           </div>
-
-          {/* Related articles section would go here */}
+        </article>
+      )}
+      {/* related articles section */}
+      {relatedArticles && relatedArticles.length > 0 ? (
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-2xl font-bold mb-4">सम्बन्धित सुचना</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {relatedArticles.map((article) => (
+              <NewsCard news={article}/>
+            ))}
+          </div>
         </div>
+      ):(
+        Array.from({ length: 5 }, (_, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <NewsCardSkeleton key={index} />
+          </div>
+        ))
       )}
     </>
   );

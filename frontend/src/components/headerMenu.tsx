@@ -14,7 +14,9 @@ import useCategoryStore from "@/stores/useCategoryStore";
 const HeaderMenu = () => {
   const { categories, fetchCategories } = useCategoryStore();
   useEffect(() => {
-    fetchCategories();
+    if (categories.length === 0) {
+      fetchCategories();
+    }
   }, []);
 
   return (
@@ -51,10 +53,15 @@ const HeaderMenu = () => {
           </SheetContent>
         </Sheet>
         <div className="hidden md:flex items-center gap-5">
-          {categories && categories.slice(0,6).map((category) => (
-          <NavLink key={category.id}  to={`/category/${category.name}/${category.id}`} className="text-lg font-semibold text-foreground">
-            {category.name}
-          </NavLink>
+          {categories &&
+            categories.slice(0, 6).map((category) => (
+              <NavLink
+                key={category.id}
+                to={`/category/${category.name}/${category.id}`}
+                className="text-lg font-semibold text-foreground"
+              >
+                {category.name}
+              </NavLink>
             ))}
         </div>
       </div>

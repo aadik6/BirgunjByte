@@ -42,8 +42,6 @@ const useNewsStore = create<NewsStore>()((set) => ({
             })
             .slice(0, 4); // Get the first five posts
         
-        console.log(recentPosts);
-        
             set({topTechNews:res.topTechNews[0]})
             set({ breakingNews: breaking });
             set({ recentNews: recentPosts });
@@ -59,6 +57,7 @@ const useNewsStore = create<NewsStore>()((set) => ({
             set({loading:true,error:null});
             const res = await getFeaturedNews();
             set({featuredNews:res.data[0],secondaryNews:res.data.slice(1, 3)});
+            set({loading:false});
         }catch(err:any){
             set({loading:false,error:"Error fetching featuredNews"})
             toast.error("Error fetching feature news",err)

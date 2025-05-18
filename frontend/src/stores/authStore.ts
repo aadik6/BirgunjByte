@@ -9,7 +9,7 @@ interface AuthStore {
     token: string | null;
     setToken: (token: string | null) => void;
     user: userData | null;
-    refreshToken: () => void
+    refreshToken: () => Promise<void>
     updateUser: (user: userData) => void;
     login: (email: string, password: string) => Promise<boolean>;
     signup: (data: userData) => Promise<void>;
@@ -42,7 +42,10 @@ export const useAuthStore = create<AuthStore>()((set) => ({
         set({ loading: true })
         try {
             const res = await getRefreshToken();
-            console.log(res)
+            if(res.status !== 200) {
+                set({ error: "Something went wrong", loading: false })
+                return;
+            }
             set({ token: res.accessToken })
             const decodedToken = jwtDecode<JwtPayload & { user: userData }>(res.accessToken);
             const decodedUser = decodedToken.user;
@@ -50,6 +53,8 @@ export const useAuthStore = create<AuthStore>()((set) => ({
             set({ loading: false })
         } catch (err) {
             set({ error: "Something went wrong", loading: false })
+        }finally {
+            set({ loading: false })
         }
     }
 }))

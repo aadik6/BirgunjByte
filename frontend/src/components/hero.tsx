@@ -16,7 +16,7 @@ const Hero = () => {
     }
   }, []);
 
-  if (loading) {
+  if (loading || !featuredNews || !secondaryNews) {
     return <HeroSkeleton />;
   }
 

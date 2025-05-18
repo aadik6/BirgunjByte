@@ -22,6 +22,7 @@ import { createNews } from "@/apis/news";
 import { toast } from "sonner";
 import { LoaderIcon } from "lucide-react";
 import useCategoryStore from "@/stores/useCategoryStore";
+import { useAuthStore } from "@/stores/authStore";
 
 const AddNews = () => {
   const [posting, setPosting] = useState<boolean>(false);
@@ -42,12 +43,14 @@ const AddNews = () => {
       category: "",
       isBreaking: false,
       isFeatured: false,
+      author: true,
     },
   });
   const { categories, fetchCategories } = useCategoryStore();
   const headingValue = watch("heading");
   const descriptionValue = watch("description");
   const categoryValue = watch("category");
+  const { user } = useAuthStore();
 
   useEffect(() => {
     if (headingValue) clearErrors("heading");
@@ -56,7 +59,7 @@ const AddNews = () => {
   }, [headingValue, descriptionValue, categoryValue, clearErrors]);
 
   useEffect(() => {
-    fetchCategories();
+    if (categories.length === 0) fetchCategories();
   }, []);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -85,7 +88,7 @@ const AddNews = () => {
 
     try {
       const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/dyzn3fmuv/image/upload`,
+        `${import.meta.env.VITE_CLOUDINARY_URL}`,
         formData
       );
       const imageUrl = response.data.secure_url;
@@ -197,13 +200,17 @@ const AddNews = () => {
             </div>
             <div className=" flex items-baseline gap-2">
               <Label htmlFor="author">Author:</Label>
-              <Select>
+              <Select
+                onValueChange={(value) => setValue("author", value === "true")}
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Author name" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="true">Author Name</SelectItem>
+                    <SelectItem value="true">
+                      {user?.firstName} {user?.lastName}
+                    </SelectItem>
                     <SelectItem value="false">None</SelectItem>
                   </SelectGroup>
                 </SelectContent>
