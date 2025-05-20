@@ -10,5 +10,5 @@ export async function authLogin(email: string, password: string) {
 
 export async function getRefreshToken() {
   const response = await customAxios.get(`auth/refresh`);
-  return response.data;
+  return response;
 }

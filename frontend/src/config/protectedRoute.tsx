@@ -4,22 +4,25 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 const ProtectedRoute: React.FC = () => {
   const navigate = useNavigate();
-  const { token, user, refreshToken } = useAuthStore();
+  const { token, user, refreshToken, loading } = useAuthStore();
 
-  // Redirect programmatically if not authenticated
   React.useEffect(() => {
     if (!token || user?.role !== "admin") {
-      refreshToken();
-      navigate("/login");
+      (async () => {
+        const ok = await refreshToken();
+        if (!ok) {
+          navigate("/login", { replace: true });
+        }
+      })();
     }
   }, [token, user, navigate]);
 
-  // Render the outlet only if the user is authenticated
   if (!token || user?.role !== "admin") {
-    return null; // Or add a fallback loader if needed
+    navigate("/login", { replace: true });
   }
-
-  return <Outlet />;
+  if (!loading) {
+    return <Outlet />;
+  }
 };
 
 export default ProtectedRoute;
