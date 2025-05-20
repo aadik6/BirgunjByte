@@ -1,28 +1,34 @@
+import React, { useEffect } from "react";
 import { useAuthStore } from "@/stores/authStore";
-import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { Loader } from "lucide-react";
 
 const ProtectedRoute: React.FC = () => {
   const navigate = useNavigate();
   const { token, user, refreshToken, loading } = useAuthStore();
 
-  React.useEffect(() => {
-    if (!token || user?.role !== "admin") {
-      (async () => {
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      if (!token || user?.role !== "admin") {
         const ok = await refreshToken();
         if (!ok) {
           navigate("/login", { replace: true });
         }
-      })();
-    }
-  }, [token, user, navigate]);
+      }
+    };
 
-  if (!token || user?.role !== "admin") {
-    navigate("/login", { replace: true });
+    checkAuthorization();
+  }, [token, user, navigate, refreshToken]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[90vh]">
+        <Loader className="animate-spin" size={24} />;
+      </div>
+    );
   }
-  if (!loading) {
-    return <Outlet />;
-  }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

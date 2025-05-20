@@ -28,7 +28,7 @@ export function LoginForm({
     e.preventDefault();
     const res = await login(email, password);
     if(res){
-      navigate("/admin");
+      navigate("/admin",{replace: true});
     }
   };
   return (

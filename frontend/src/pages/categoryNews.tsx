@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import CategoryPageSkeleton from "@/components/categoryPageSkeleton";
+import { User } from "lucide-react";
+
 
 const CategoryNews = () => {
   const { name, id } = useParams();
@@ -68,18 +70,18 @@ const CategoryNews = () => {
                   {parse(featuredNews.description)}
                 </p>
 
-                <div className="flex justify-between items-center text-sm">
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 bg-gray-300 rounded-full mr-2 flex items-center justify-center">
-                      {/* {featuredNews?.author.charAt(0)} */}
+                <div className="flex justify-between items-center text-sm flex-wrap gap-1 text-muted-foreground">
+                  <div className="flex items-center gap-0">
+                    <User className="h-4 w-4 mb-0.5"/>
+                    <div className="ml-1">
+                      <p className="font-medium">Aadarsh Kushwaha</p>
                     </div>
-                    <span>Aadarsh Kushwaha</span>
                   </div>
                   <span className="text-gray-500">
                     {featuredNews.npDate?.split("T")[0]}
                   </span>
                   <button
-                    className=" bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
+                    className=" bg-purple-500 text-white px-2 md:px-4 py-1 md:py-2 rounded hover:bg-purple-600"
                     onClick={() => {
                       navigate(`/news/${featuredNews.id}`);
                     }}
@@ -115,7 +117,7 @@ const CategoryNews = () => {
                   />
                 </div>
                 <div className="w-2/3 p-3">
-                  <h4 className="text-[15px] md:text-lg font-light md:font-normal">
+                  <h4 className="text-[15px] md:text-lg font-light md:font-normal line-clamp-2">
                     {parse(news.heading)}
                   </h4>
                 </div>

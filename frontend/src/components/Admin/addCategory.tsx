@@ -137,14 +137,14 @@ const Category = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <Button
         onClick={() => setAddCategoryDialog(true)}
         className="cursor-pointer bg-purple-600 hover:bg-purple-800 dark:text-white"
       >
         Add Category
       </Button>
-      <div>
+      <div className="">
         <DataTable data={categories} columns={categoryColumn()} />
       </div>
       <CategoryDialog

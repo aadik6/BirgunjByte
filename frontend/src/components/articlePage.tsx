@@ -7,7 +7,7 @@ import {
   Share2,
   ThumbsUp,
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { newsData } from "@/types/newsTypes";
 import { getNewsById } from "@/apis/news";
 import parse from "html-react-parser";
@@ -25,10 +25,9 @@ const authorData = {
 
 export default function ArticlePage() {
   const id = useParams();
-  console.log(id.id, "id");
   const [newsArticle, setNewsArticle] = useState<newsData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const navigate = useNavigate();
   const fetchNews = async (id: string) => {
     try {
       setLoading(true);
@@ -171,7 +170,9 @@ export default function ArticlePage() {
           <h2 className="text-2xl font-bold mb-4">सम्बन्धित सुचना</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {relatedArticles.map((article) => (
-              <NewsCard news={article}/>
+              <div onClick={()=>{navigate(`/news/${article.id}`)}} className="cursor-pointer">
+                <NewsCard news={article}/>
+              </div>
             ))}
           </div>
         </div>
