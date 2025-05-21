@@ -326,7 +326,7 @@ const updateUserByAdmin = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await UserModel.find({ role: "user" }).select(
+    const users = await UserModel.find().select(
       "-password -refreshToken"
     );
     if (!users) {
