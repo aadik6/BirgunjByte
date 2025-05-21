@@ -18,3 +18,23 @@ export const newsSchema = z.object({
 });
 
 export type NewsFormValue = z.infer<typeof newsSchema>
+
+export const userSchema = z
+  .object({
+    firstName: z.string().min(2, "First name is required"),
+    lastName: z.string().min(2, "Last name is required"),
+    userName: z.string().min(3, "Username is required"),
+    email: z.string().email("Invalid email"),
+    role: z.enum(["admin", "editor", "user"], {
+      required_error: "Role is required",
+    }),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Confirm your password"),
+    avatar: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type UserForm = z.infer<typeof userSchema>;

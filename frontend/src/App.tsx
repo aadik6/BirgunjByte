@@ -12,6 +12,8 @@ import Login from "./components/login";
 import AdminLayout from "@/components/adminLayout";
 import AdminDashboard from "./components/Admin/adminDashboard";
 import ProtectedRoute from "./config/protectedRoute";
+import Users from "./components/Admin/users";
+import AddUser from "./components/Admin/addUser";
 
 const App = () => {
   return (
@@ -31,9 +33,11 @@ const App = () => {
           <Route element={<AdminLayout />}>
             <Route element={<ProtectedRoute />}>
               <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/managenews" element={<ManageNews />} />
-              <Route path="/addNews" element={<AddNews />} />
-              <Route path="/category" element={<Category />} />
+              <Route path="/admin/managenews" element={<ManageNews />} />
+              <Route path="/admin/addNews" element={<AddNews />} />
+              <Route path="/admin/category" element={<Category />} />
+              <Route path="/admin/users" element={<Users/>} />
+              <Route path="/admin/adduser" element={<AddUser />} />
             </Route>
           </Route>
         </Routes>

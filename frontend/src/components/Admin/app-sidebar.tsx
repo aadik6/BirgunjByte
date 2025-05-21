@@ -6,6 +6,9 @@ import {
   Notebook,
   NotebookPen,
   Grid2X2CheckIcon,
+  Users,
+  LogOut,
+  UserPen,
 } from "lucide-react";
 
 import {
@@ -31,6 +34,7 @@ import { Separator } from "../ui/separator";
 import { useEffect, useState } from "react";
 import NepaliDate from "nepali-date";
 import { useAuthStore } from "@/stores/authStore";
+import { authLogout } from "@/apis/user";
 
 // Menu items.
 const items = [
@@ -41,24 +45,24 @@ const items = [
   },
   {
     title: "News",
-    url: "/managenews",
+    url: "/admin/managenews",
     icon: Notebook,
   },
   {
     title: "Add News",
-    url: "/addnews",
+    url: "/admin/addnews",
     icon: NotebookPen,
   },
   {
     title: "Categories",
-    url: "/category",
+    url: "/admin/category",
     icon: Grid2X2CheckIcon,
   },
-  // {
-  //   title: "Search",
-  //   url: "#",
-  //   icon: Search,
-  // },
+  {
+    title: "Users",
+    url: "/admin/users",
+    icon: Users,
+  },
   {
     title: "Settings",
     url: "#",
@@ -90,7 +94,18 @@ export function AppSidebar() {
     return () => clearInterval(interval);
   }, []);
   const navigate = useNavigate();
-  const {user} = useAuthStore();
+  const {user,setToken} = useAuthStore();
+  const logout = async() => {
+    try {
+      const res = await authLogout();
+      if (res.status === 200) {
+        setToken(null);
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log("logout error", err);
+    }
+  }
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -131,23 +146,24 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
+              <div >
                 <SidebarMenuButton>
-                  <User2 /> {user?.userName}
+                  <User2 /> {user?.firstName} {user?.lastName}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
+                align="end"
+                // side="right"
+                className="w-[--radix-popper-anchor-width] bg-background/50 p-2 rounded-md"
+
               >
-                <DropdownMenuItem>
-                  <span>Account</span>
+                <DropdownMenuItem className="outline-0 cursor-pointer px-3 py-0.5 hover:bg-accent rounded-sm">
+                  <div className="flex items-center gap-2"><UserPen className="h-4 w-4"/>Account</div>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Sign out</span>
+                <DropdownMenuItem className="cursor-pointer px-3 outline-0 py-0.5 hover:bg-accent rounded-sm" onClick={logout}>
+                  <div className="flex items-center gap-2"><LogOut className="w-4 h-4"/>Sign out</div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

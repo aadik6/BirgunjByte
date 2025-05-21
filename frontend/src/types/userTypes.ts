@@ -1,10 +1,10 @@
 export interface userData{
-    id:string;
+    id?:string;
     firstName:string;
     lastName:string;
     userName:string;
     email:string;
-    image:string;
+    avatar:string;
     role:string;
-    createdAt:string;
+    createdAt?:string;
 }

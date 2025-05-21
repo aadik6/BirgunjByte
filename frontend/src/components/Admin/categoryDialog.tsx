@@ -135,7 +135,7 @@ function CategoryDialog({
           </div>
 
           <DialogFooter>
-            <Button type="submit" disabled={processing}>
+            <Button type="submit" disabled={processing} className="bg-purple-700 hover:bg-purple-700 text-white cursor-pointer">
               {processing ? (
                 <>
                   <LoaderIcon className="animate-spin" />

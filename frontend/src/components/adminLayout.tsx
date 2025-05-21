@@ -9,11 +9,11 @@ export default function AdminLayout() {
     useAuthStore.getState().setToken,
     useAuthStore.getState().updateUser
   );
-
+const {token} = useAuthStore()
   return (
     <div className="bg-gradient-to-br from-background to-muted ">
       <SidebarProvider>
-        <AppSidebar />
+        {token && <AppSidebar />}
         <main className="min-h-screen container mx-auto  py-8 px-4">
           <SidebarTrigger />
           <Outlet />
