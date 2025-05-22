@@ -7,7 +7,7 @@ import DeleteDialog from "../ui/deleteDialog";
 import { toast } from "sonner";
 import CategoryDialog from "./categoryDialog";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Edit, Trash, View } from "lucide-react";
+import { ArrowUpDown, Edit, Loader, Trash, View } from "lucide-react";
 import useCategoryStore from "@/stores/useCategoryStore";
 
 const Category = () => {
@@ -133,7 +133,11 @@ const Category = () => {
     fetchCategories();
   }, []);
   if (loading) {
-    return <div>Loading.....</div>;
+    return (
+      <div className="flex items-center justify-center h-[90vh]">
+      <Loader className="animate-spin" size={24} />;
+    </div>
+    )
   }
 
   return (

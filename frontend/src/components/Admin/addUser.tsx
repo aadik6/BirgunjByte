@@ -280,7 +280,7 @@ const AddUser = () => {
             </div>
             <Button
               type="submit"
-              className="w-full cursor-pointer"
+              className="w-full cursor-pointer bg-purple-700 hover:bg-purple-700 text-white"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Adding..." : "Add User"}

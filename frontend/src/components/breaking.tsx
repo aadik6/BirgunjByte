@@ -2,7 +2,7 @@ import useNewsStore from "@/stores/useNewsStore";
 import { Marquee } from "./magicui/marquee";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import parse from "html-react-parser";
 const Breaking = () => {
   const { breakingNews,fetchNews } = useNewsStore();
   useEffect(() => {
@@ -28,7 +28,7 @@ const Breaking = () => {
                 navigate(`/news/${news.id}`);
               }}
             >
-              {news.heading}
+              {parse(news.heading)} ।
             </div>
           ))}
       </Marquee>

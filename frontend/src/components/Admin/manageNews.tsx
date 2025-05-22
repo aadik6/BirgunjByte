@@ -6,7 +6,7 @@ import { DataTable } from "../dataTable";
 import parse from "html-react-parser";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
-import { MoreHorizontal } from "lucide-react";
+import { Loader, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,15 +17,19 @@ import {
 } from "../ui/dropdown-menu";
 import { toast } from "sonner";
 import DeleteDialog from "../ui/deleteDialog";
+import { set } from "zod";
 
 const ManageNews = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<newsData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const fetchNews = async () => {
     try {
+      setLoading(true);
       const res = await getAllNews();
       console.log(res.data.news, "data");
       setData(res.data.news);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching news:", error);
     }
@@ -142,12 +146,18 @@ const ManageNews = () => {
     setDeleteDialogOpen(false);
     setNewsId("");
   };
-
+if(loading) {
+  return (
+    <div className="flex items-center justify-center h-[90vh]">
+    <Loader className="animate-spin" size={24} />
+  </div>
+  )
+}
   return (
     <div>
       <Button
         // variant={"outline"}
-        onClick={() => navigate("/addNews")}
+        onClick={() => navigate("/admin/addNews")}
         className="cursor-pointer bg-purple-600 hover:bg-purple-800 dark:text-white"
       >
         Add News
