@@ -23,7 +23,7 @@ const ProtectedRoute: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[90vh]">
-        <Loader className="animate-spin" size={24} />;
+        <Loader className="animate-spin" size={24} />
       </div>
     );
   }

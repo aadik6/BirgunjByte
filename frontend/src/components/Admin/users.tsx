@@ -6,15 +6,19 @@ import { DataTable } from "../dataTable";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "lucide-react";
 
 const Users = () => {
   const [users, setUsers] = useState<userData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchUsers = async () => {
+      setLoading(true);
       try {
         const res = await getUsers();
         setUsers(res.data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
         toast.error("Something went wrong while fetching users");
@@ -46,6 +50,13 @@ const Users = () => {
       header: "Role",
     },
   ];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[90vh]">
+        <Loader className="animate-spin" size={24} />
+      </div>
+    );
+  }
   return (
     <div className="container">
       <Button
