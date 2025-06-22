@@ -43,6 +43,17 @@ const newsSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    dailyViews: [{
+        date: {
+            type: Date,
+            default: Date.now,
+        },
+        views: {
+            type: Number,
+            default: 0,
+        },
+    }],
+    
     isDeleted:{
         type: Boolean,
         default: false,
@@ -65,6 +76,6 @@ const newsSchema = new mongoose.Schema({
         ref: "User",
         
     },
-})
+},{timestamps: true});
 
 module.exports = mongoose.model("News", newsSchema);

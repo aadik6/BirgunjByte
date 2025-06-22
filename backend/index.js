@@ -5,6 +5,7 @@ const ConnectDB = require("./config/db");
 const categoryRoutes = require("./routes/categoryRoutes");
 const newsRoutes = require("./routes/newsRoutes");
 const authRoutes = require("./routes/authRoutes");
+const StaticsRoutes = require("./routes/statisticssRoutes");
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use("/api/category", categoryRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/statistics",StaticsRoutes);
 
 
 app.listen(PORT, () => {

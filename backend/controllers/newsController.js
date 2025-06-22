@@ -1,6 +1,7 @@
 const News = require("../models/newsModel");
 const NepaliDate = require("nepali-date");
 const striptags = require("striptags");
+const SiteRecords = require("../models/siteRecordsModel");
 
 const createNews = async (req, res) => {
   const {
@@ -41,7 +42,8 @@ const createNews = async (req, res) => {
       createdAt: news.createdAt,
       updatedAt: news.updatedAt,
     };
-
+    const siteRecord = await SiteRecords.getOrCreateToday();
+    await siteRecord.incrementField("totalNews", 1);
     res.status(201).json({
       success: true,
       message: "News created successfully",
@@ -73,7 +75,8 @@ const getFeaturedNews = async (req, res) => {
       views: news.views,
       category: news.category,
     }));
-
+    const siteRecord = await SiteRecords.getOrCreateToday();
+    await siteRecord.incrementField("siteVisits", 1);
     res.status(200).json({
       success: true,
       message: "Featured News fetched successfully",
@@ -164,6 +167,7 @@ const getAllNews = async (req, res) => {
 const getNewsById = async (req, res) => {
   const { id } = req.params;
   try {
+    const today = new Date().toISOString().split("T")[0];
     const news = await News.findOneAndUpdate(
       { _id: id, isDeleted: false },
       { $inc: { views: 1 } },
@@ -175,6 +179,21 @@ const getNewsById = async (req, res) => {
         message: "News not found",
       });
     }
+    // Check if today's date exists in the `dailyViews` array
+    const todayViewIndex = news.dailyViews.findIndex(
+      (view) => view.date.toISOString().split("T")[0] === today
+    );
+
+    if (todayViewIndex !== -1) {
+      // If today's date exists, increment the views for today
+      news.dailyViews[todayViewIndex].views += 1;
+    } else {
+      // If today's date does not exist, add a new entry for today
+      news.dailyViews.push({ date: new Date(), views: 1 });
+    }
+
+    await news.save();
+
     const toSend = {
       id: news._id,
       heading: news.heading,
@@ -185,6 +204,7 @@ const getNewsById = async (req, res) => {
       npDate: news.npDate,
       category: news.category,
       createdAt: news.createdAt,
+      dailyViews: news.dailyViews,
       updatedAt: news.updatedAt,
     };
     res.status(200).json({
