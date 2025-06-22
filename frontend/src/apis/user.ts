@@ -27,3 +27,8 @@ export async function addUser(data:userData) {
   const response = await customAxios.post(`auth/adduser`, data);
   return response.data;
 }
+
+export async function updateUser(data:userData) {
+  const response = await customAxios.patch("auth/update",data);
+  return response
+}

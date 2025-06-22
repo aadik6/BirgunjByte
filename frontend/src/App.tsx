@@ -14,6 +14,8 @@ import AdminDashboard from "./components/Admin/adminDashboard";
 import ProtectedRoute from "./config/protectedRoute";
 import Users from "./components/Admin/users";
 import AddUser from "./components/Admin/addUser";
+import AccountPage from "./components/Admin/profile";
+import ManageAds from "./components/Admin/manageAds";
 
 const App = () => {
   return (
@@ -38,6 +40,8 @@ const App = () => {
               <Route path="/admin/category" element={<Category />} />
               <Route path="/admin/users" element={<Users/>} />
               <Route path="/admin/adduser" element={<AddUser />} />
+              <Route path="/admin/ads" element={<ManageAds />} />
+              <Route path="/admin/profile" element={<AccountPage/>}/>
             </Route>
           </Route>
         </Routes>

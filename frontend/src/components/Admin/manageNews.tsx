@@ -18,7 +18,6 @@ import {
 import { toast } from "sonner";
 import DeleteDialog from "../ui/deleteDialog";
 
-
 const ManageNews = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<newsData[]>([]);
@@ -96,6 +95,10 @@ const ManageNews = () => {
               >
                 Copy news ID
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  navigate(`/admin/news/${news.id}`);
+                }}>View Insight</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
@@ -146,13 +149,13 @@ const ManageNews = () => {
     setDeleteDialogOpen(false);
     setNewsId("");
   };
-if(loading) {
-  return (
-    <div className="flex items-center justify-center h-[90vh]">
-    <Loader className="animate-spin" size={24} />
-  </div>
-  )
-}
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[90vh]">
+        <Loader className="animate-spin" size={24} />
+      </div>
+    );
+  }
   return (
     <div>
       <Button

@@ -9,6 +9,7 @@ import {
   Users,
   LogOut,
   UserPen,
+  ChartNoAxesCombined,
 } from "lucide-react";
 
 import {
@@ -59,13 +60,18 @@ const items = [
     icon: Grid2X2CheckIcon,
   },
   {
+    title:"Ads",
+    url: "/admin/ads",
+    icon: ChartNoAxesCombined,   
+  },
+  {
     title: "Users",
     url: "/admin/users",
     icon: Users,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/admin/profile",
     icon: Settings,
   },
 ];
@@ -156,10 +162,10 @@ export function AppSidebar() {
               <DropdownMenuContent
                 align="end"
                 // side="right"
-                className="w-[--radix-popper-anchor-width] bg-background/50 p-2 rounded-md"
+                className="w-[--radix-popper-anchor-width] bg-background/50 p-2 rounded-md text-sm"
 
               >
-                <DropdownMenuItem className="outline-0 cursor-pointer px-3 py-0.5 hover:bg-accent rounded-sm">
+                <DropdownMenuItem className="outline-0 cursor-pointer px-3 py-0.5 hover:bg-accent rounded-sm " onClick={()=>{navigate("/admin/profile")}}>
                   <div className="flex items-center gap-2"><UserPen className="h-4 w-4"/>Account</div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer px-3 outline-0 py-0.5 hover:bg-accent rounded-sm" onClick={logout}>
