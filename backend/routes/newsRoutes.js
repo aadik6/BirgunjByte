@@ -8,6 +8,7 @@ const {
   deleteNews,
   getFeaturedNews,
   mostViewedNews,
+  getDailyViews,
 } = require("../controllers/newsController");
 const authMiddleware = require("../middleware/authMiddleware");
 
@@ -20,5 +21,6 @@ router.get("/mostviewed", mostViewedNews);
 router.get("/category/:categoryId", getNewsByCategory);
 router.patch("/update/:id", authMiddleware, updateNews);
 router.delete("/delete/:id", authMiddleware, deleteNews);
+router.post("/getDailyViews/:id", getDailyViews);
 
 module.exports = router;

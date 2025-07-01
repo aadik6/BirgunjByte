@@ -49,3 +49,9 @@ export async function getNewsByCategory(category: string) {
     const response = await axios.get(`${BASE_URL}${url}`);
     return response.data;
 }
+
+export async function getDailyViews(id:string,mode:string) {
+    const url = "news/getDailyViews";
+    const response = await axios.post(`${BASE_URL}${url}/${id}`, { mode: mode });
+    return response;
+}

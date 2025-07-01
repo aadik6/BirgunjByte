@@ -16,6 +16,7 @@ import Users from "./components/Admin/users";
 import AddUser from "./components/Admin/addUser";
 import AccountPage from "./components/Admin/profile";
 import ManageAds from "./components/Admin/manageAds";
+import NewsInsight from "./components/Admin/newsInsight";
 
 const App = () => {
   return (
@@ -38,10 +39,11 @@ const App = () => {
               <Route path="/admin/managenews" element={<ManageNews />} />
               <Route path="/admin/addNews" element={<AddNews />} />
               <Route path="/admin/category" element={<Category />} />
-              <Route path="/admin/users" element={<Users/>} />
+              <Route path="/admin/users" element={<Users />} />
               <Route path="/admin/adduser" element={<AddUser />} />
               <Route path="/admin/ads" element={<ManageAds />} />
-              <Route path="/admin/profile" element={<AccountPage/>}/>
+              <Route path="/admin/profile" element={<AccountPage />} />
+              <Route path="/admin/news/:id" element={<NewsInsight />} />
             </Route>
           </Route>
         </Routes>

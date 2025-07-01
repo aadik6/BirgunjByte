@@ -1,5 +1,5 @@
+import { getStatistics } from "@/apis/statistics";
 import { useAuthStore } from "@/stores/authStore";
-import axios from "axios";
 import { Users, FileText, Eye, Monitor } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -23,9 +23,9 @@ const AdminDashboard = () => {
     useState<DashboardStatsProps | null>(null);
 
   const fetchDashboardStats = async () => {
-    const res = await axios.get("http://localhost:5000/api/statistics/total");
-    if (res.status === 200) {
-      setDashboardStats(res.data);
+    const res = await getStatistics();
+    if (res) {
+      setDashboardStats(res);
     } else {
       console.error("Failed to fetch dashboard stats");
     }
@@ -33,25 +33,6 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchDashboardStats();
   }, []);
-
-  // Dummy data for dashboard metrics
-  // const dashboardStats = {
-  //   totalNews: 20,
-  //   totalSiteViews: 89432,
-  //   totalAds: 156,
-  //   totalUsers: 1
-  // };
-
-  // Dummy user data (if user from store doesn't have all fields)
-  const defaultUser = {
-    avatar:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    firstName: user?.firstName || "John",
-    lastName: user?.lastName || "Doe",
-    userName: user?.userName || "johndoe",
-    email: user?.email || "john.doe@admin.com",
-    role: user?.role || "Super Admin",
-  };
 
   const StatCard = ({ icon: Icon, title, value, color }: StatCardProps) => (
     <div
@@ -82,27 +63,26 @@ const AdminDashboard = () => {
         <div className="bg-background/60 rounded-lg shadow-md p-6 mb-8">
           <div className="flex items-center space-x-6">
             <img
-              src={defaultUser.avatar}
+              src={user?.avatar}
               alt="Admin Avatar"
               className="w-20 h-20 rounded-full object-cover border-4 border-blue-500"
             />
             <div className="flex-1">
               <h1 className="text-3xl font-bold ">
-                Welcome back, {defaultUser.firstName} {defaultUser.lastName}
+                Welcome back, {user?.firstName} {user?.lastName}
               </h1>
               <div className="mt-2 space-y-1">
                 <p className="text-gray-600">
                   <span className="font-medium">Username:</span> @
-                  {defaultUser.userName}
+                  {user?.userName}
                 </p>
                 <p className="text-gray-600">
-                  <span className="font-medium">Email:</span>{" "}
-                  {defaultUser.email}
+                  <span className="font-medium">Email:</span> {user?.email}
                 </p>
                 <p className="text-gray-600">
                   <span className="font-medium">Role:</span>
                   <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                    {defaultUser.role}
+                    {user?.role}
                   </span>
                 </p>
               </div>
@@ -149,9 +129,7 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Recent News */}
           <div className="bg-background/65 rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-semibold mb-4">
-              Recent News Articles
-            </h3>
+            <h3 className="text-xl font-semibold mb-4">Recent News Articles</h3>
             <div className="space-y-4">
               {[
                 {
@@ -180,7 +158,7 @@ const AdminDashboard = () => {
                   className="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
                 >
                   <div className="flex-1">
-                    <p className="font-medium ">{article.title}</p>  
+                    <p className="font-medium ">{article.title}</p>
                     <p className="text-sm text-gray-500">{article.time}</p>
                   </div>
                   <span
@@ -201,9 +179,7 @@ const AdminDashboard = () => {
 
           {/* System Status */}
           <div className="bg-background/65 rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-semibold mb-4">
-              System Status
-            </h3>
+            <h3 className="text-xl font-semibold mb-4">System Status</h3>
             <div className="space-y-4">
               {[
                 { service: "Website", status: "Online", uptime: "99.9%" },
@@ -217,9 +193,7 @@ const AdminDashboard = () => {
                 >
                   <div className="flex items-center space-x-3">
                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <span className="font-medium">
-                      {service.service}
-                    </span>
+                    <span className="font-medium">{service.service}</span>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium text-green-600">

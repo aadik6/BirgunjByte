@@ -413,6 +413,61 @@ const mostViewedNews = async (req, res) => {
   }
 };
 
+const getDailyViews = async (req, res) => {
+  const { id } = req.params;
+  const { mode } = req.body; // mode: 'weekly', 'monthly', 'quarterly'
+  try {
+    const news = await News.findById(id).populate([
+      { path: "createdBy", select: "firstName lastName _id" },
+      { path: "updatedBy", select: "firstName lastName _id" },
+      { path: "category", select: "name _id" },
+    ]);
+    if (!news) {
+      return res.status(404).json({
+        success: false,
+        message: "News not found",
+      });
+    }
+
+    let days = 1;
+    if (mode === "weekly") days = 7;
+    else if (mode === "monthly") days = 30;
+    else if (mode === "quarterly" || mode === "yearly") days = 120;
+
+    const today = new Date();
+    // Get dailyViews for the last 'days' days
+    const filteredViews = news.dailyViews
+      .filter((view) => {
+        const viewDate = new Date(view.date);
+        const diffTime = today - viewDate;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+        return diffDays < days;
+      })
+      .sort((a, b) => new Date(a.date) - new Date(b.date)); // sort ascending
+
+    res.status(200).json({
+      success: true,
+      message: "Daily views fetched successfully",
+      news: {
+        heading: news.heading,
+        author: news.author,
+        category: news.category,
+        createdAt: news.createdAt,
+        updatedAt: news.updatedAt,
+        createdBy: news.createdBy,
+        updatedBy: news.updatedBy,
+      },
+      data: filteredViews,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createNews,
   getAllNews,
@@ -422,4 +477,5 @@ module.exports = {
   getNewsByCategory,
   getFeaturedNews,
   mostViewedNews,
+  getDailyViews,
 };
