@@ -1,5 +1,10 @@
 import { CategoryData } from "./columnTypes";
 
+type authorData = {
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+};
 export type newsData = {
   id: string;
   heading: string;
@@ -11,8 +16,8 @@ export type newsData = {
   views: string;
   updatedAt?: string;
   npDate?: string;
-  createdBy?: string;
-  updatedBy?: string;
+  createdBy?: authorData;
+  updatedBy?: authorData;
 };
 
 export type ViewsData = {
